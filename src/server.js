@@ -34,6 +34,8 @@ const supabase = supa.createClient(supabaseUrl, supabaseKey);
 
 // artists
 artists.handleAll(supabase, app);
+artists.handleByArtist(supabase, app);
+artists.handleAveragesForArtist(supabase, app);
 
 // display 404 error for any invalid requests
 handleInvalidRequests(); 

@@ -140,3 +140,4 @@ vite.config.ts.timestamp-*
 
 # Extra stuff
 .DS_Store
+sql_queries.md
