@@ -14,6 +14,7 @@ dotenv.config();
 const artists = require('./artists-router.js');
 const genres = require('./genres-router.js');
 const songs = require('./songs-router.js');
+const playlists = require('./playlists-router.js');
 
 /*--------------------------------------
 / SECTION: Functions
@@ -51,6 +52,9 @@ songs.handleContainsSubstring(supabase, app);
 songs.handleByYear(supabase, app);
 songs.handleByArtist(supabase, app);
 songs.handleByGenre(supabase, app);
+
+// playlists
+playlists.handleAll(supabase, app);
 
 // display 404 error for any invalid requests
 handleInvalidRequests(); 
