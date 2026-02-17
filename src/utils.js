@@ -15,9 +15,17 @@ const jsonErrorMsg = (msg) => {
   return { Error: msg };
 };
 
+function provideErrorDetails(error) {
+  console.log(`Error code: ${error.error}`);
+  console.log(`Error message: ${error.message}`);
+  console.log(`HTTP status: ${error.status}`);
+  console.log(`Status code: ${error.statusCode}`);
+}
+
 /*--------------------------------------
 / SECTION: Module Exports
 /-------------------------------------*/
 module.exports = { 
-  jsonErrorMsg 
+  jsonErrorMsg,
+  provideErrorDetails
 };

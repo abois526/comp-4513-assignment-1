@@ -13,6 +13,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const artists = require('./artists-router.js');
 const genres = require('./genres-router.js');
+const songs = require('./songs-router.js');
 
 /*--------------------------------------
 / SECTION: Functions
@@ -40,6 +41,16 @@ artists.handleAveragesForArtist(supabase, app);
 
 // genres
 genres.handleAll(supabase, app);
+
+// songs
+songs.handleAll(supabase, app);
+songs.handleByOrderField(supabase, app);
+songs.handleBySongId(supabase, app);
+songs.handleBeginsWithSubstring(supabase, app);
+songs.handleContainsSubstring(supabase, app);
+songs.handleByYear(supabase, app);
+songs.handleByArtist(supabase, app);
+songs.handleByGenre(supabase, app);
 
 // display 404 error for any invalid requests
 handleInvalidRequests(); 
