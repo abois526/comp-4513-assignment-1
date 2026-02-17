@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -31,8 +31,11 @@ function handleAll(supabase, app) {
       .order('artist_name', {ascending: true});
     // handle supabase error
     if (error) {
-      console.error(`Supabase error: ${error}`);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
     // return the data
     res.status(200).json(data);
@@ -59,14 +62,18 @@ function handleByArtist(supabase, app) {
       .eq('artist_id', req.params.ref);
     // handle supabase error
     if (error) {
-      console.error(`Supabase error: ${error}`);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
     // if query produces a result return data, else provide error message
     if (data.length > 0) { 
       res.status(200).json(data);
     } else {
       res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
         `No artist match found for the artist_id ${req.params.ref}`
       ));
     }
@@ -99,14 +106,18 @@ function handleAveragesForArtist(supabase, app) {
       .eq('artist_id', 2);
     // handle supabase error
     if (error) {
-      console.error(`Supabase error: ${error}`);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
     // if query produces a result return data, else provide error message
     if (data.length > 0) { 
       res.status(200).json(data);
     } else {
       res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
         `No artist match found for the artist_id ${req.params.ref}`
       ));
     }

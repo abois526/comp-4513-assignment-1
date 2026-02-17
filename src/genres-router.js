@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -23,8 +23,11 @@ function handleAll(supabase, app) {
       .select();
     // handle supabase error
     if (error) {
-      console.error(`Supabase error: ${error}`);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
     // return the data
     res.status(200).json(data);

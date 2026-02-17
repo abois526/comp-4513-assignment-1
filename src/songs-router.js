@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg, provideErrorDetails } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -40,8 +40,11 @@ function handleAll(supabase, app) {
       .order('title', {ascending: true});
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
     // return the data
     res.status(200).json(data);
@@ -86,11 +89,21 @@ function handleBySongId(supabase, app) {
       .eq('song_id', req.params.ref);
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
-    // return the data
-    res.status(200).json(data);
+    // if query produces a result return data, else provide error message
+    if (data.length > 0) { 
+      res.status(200).json(data);
+    } else {
+      res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `No song match found for the song_id ${req.params.ref}`
+      ));
+    }
   });
 }
 
@@ -123,11 +136,21 @@ function handleBeginsWithSubstring(supabase, app) {
       .ilike('title', `${req.params.substring}%`);
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
-    // return the data
-    res.status(200).json(data);
+    // if query produces a result return data, else provide error message
+    if (data.length > 0) { 
+      res.status(200).json(data);
+    } else {
+      res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `No song matches found beginning with the substring ${req.params.substring}`
+      ));
+    }
   });
 }
 
@@ -160,11 +183,21 @@ function handleContainsSubstring(supabase, app) {
       .ilike('title', `%${req.params.substring}%`);
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
-    // return the data
-    res.status(200).json(data);
+    // if query produces a result return data, else provide error message
+    if (data.length > 0) { 
+      res.status(200).json(data);
+    } else {
+      res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `No song matches found containing the substring ${req.params.substring}`
+      ));
+    }
   });
 }
 
@@ -197,11 +230,21 @@ function handleByYear(supabase, app) {
       .eq('year', req.params.substring);
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
-    // return the data
-    res.status(200).json(data);
+    // if query produces a result return data, else provide error message
+    if (data.length > 0) { 
+      res.status(200).json(data);
+    } else {
+      res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `No song matches found whose year is equal to ${req.params.substring}`
+      ));
+    }
   });
 }
 
@@ -234,11 +277,21 @@ function handleByArtist(supabase, app) {
       .eq('artist_id', req.params.ref);
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
-    // return the data
-    res.status(200).json(data);
+    // if query produces a result return data, else provide error message
+    if (data.length > 0) { 
+      res.status(200).json(data);
+    } else {
+      res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `No song matches found for the artist_id ${req.params.ref}`
+      ));
+    }
   });
 }
 
@@ -271,11 +324,21 @@ function handleByGenre(supabase, app) {
       .eq('genre_id', req.params.ref);
     // handle supabase error
     if (error) {
-      provideErrorDetails(error);
-      return res.status(500).json(jsonErrorMsg(error.message));
+      logFormattedSupabaseError(error);
+      return res.status(500).json(jsonErrorMsg(
+        "Error (Supabase)",
+        error.message
+      ));
     }
-    // return the data
-    res.status(200).json(data);
+    // if query produces a result return data, else provide error message
+    if (data.length > 0) { 
+      res.status(200).json(data);
+    } else {
+      res.status(404).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `No song matches found for the genre_id ${req.params.ref}`
+      ));
+    }
   });
 }
 
