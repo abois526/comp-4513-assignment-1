@@ -12,6 +12,7 @@ const supa = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
 dotenv.config();
 const artists = require('./artists-router.js');
+const genres = require('./genres-router.js');
 
 /*--------------------------------------
 / SECTION: Functions
@@ -36,6 +37,9 @@ const supabase = supa.createClient(supabaseUrl, supabaseKey);
 artists.handleAll(supabase, app);
 artists.handleByArtist(supabase, app);
 artists.handleAveragesForArtist(supabase, app);
+
+// genres
+genres.handleAll(supabase, app);
 
 // display 404 error for any invalid requests
 handleInvalidRequests(); 
