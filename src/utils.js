@@ -8,14 +8,19 @@
 /-------------------------------------*/
 /**
  * @description helper function to create a JSON message
- * @param {String} msg the JSON message
+ * @param {String} key the key for the JSON message
+ * @param {String} value the value for the JSON message
  * @returns {Object} a message in JSON format
  */
-const jsonErrorMsg = (msg) => {
-  return { Error: msg };
+const jsonErrorMsg = (key, value) => {
+  return { [key]: value};
 };
 
-function provideErrorDetails(error) {
+/**
+ * @description formats error details for supabase errors
+ * @param {String} error the supabase error
+ */
+function logFormattedSupabaseError(error) {
   console.log(`Error code: ${error.error}`);
   console.log(`Error message: ${error.message}`);
   console.log(`HTTP status: ${error.status}`);
@@ -27,5 +32,5 @@ function provideErrorDetails(error) {
 /-------------------------------------*/
 module.exports = { 
   jsonErrorMsg,
-  provideErrorDetails
+  logFormattedSupabaseError
 };
