@@ -23,8 +23,8 @@ function handleAll(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
@@ -57,7 +57,43 @@ function handleAll(supabase, app) {
  * @param {Function} app the express application 
  */
 function handleByOrderField(supabase, app) {
-  // TODO
+  app.get('/api/songs/sort/:order', async (req, res) => {
+    // set up syntax to order parent table by the referenced table
+    let order = req.params.order;
+    if (order === "artist_name") order = `artist(${order})`;
+    if (order === "genre_name") order = `genre(${order})`;
+
+    const {data, error} = await supabase 
+        .from('songs')
+        .select(`
+          song_id,
+          title,
+          artist:artists!inner(artist_id, artist_name),
+          genre:genres!inner(genre_id, genre_name),
+          year,
+          bpm,
+          energy,
+          danceability,
+          loudness,
+          liveness,
+          valence,
+          duration,
+          acousticness,
+          speechiness,
+          popularity
+        `)
+        .order(order, {ascending: true});
+      // handle supabase error
+      if (error) {
+        logFormattedSupabaseError(error);
+        return res.status(500).json(jsonErrorMsg(
+          "Error (Supabase)",
+          error.message
+        ));
+      }
+      // return the data
+      res.status(200).json(data);
+  });
 }
 
 /**
@@ -72,8 +108,8 @@ function handleBySongId(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
@@ -119,8 +155,8 @@ function handleBeginsWithSubstring(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
@@ -166,8 +202,8 @@ function handleContainsSubstring(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
@@ -213,8 +249,8 @@ function handleByYear(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
@@ -260,8 +296,8 @@ function handleByArtist(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
@@ -307,8 +343,8 @@ function handleByGenre(supabase, app) {
       .select(`
         song_id,
         title,
-        artists(artist_id, artist_name),
-        genres(genre_id, genre_name),
+        artist:artists!inner(artist_id, artist_name),
+        genre:genres!inner(genre_id, genre_name),
         year,
         bpm,
         energy,
