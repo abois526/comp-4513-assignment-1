@@ -103,7 +103,7 @@ function handleAveragesForArtist(supabase, app) {
         avg_popularity:popularity.avg()
         `,
       )
-      .eq('artist_id', 2);
+      .eq('artist_id', req.params.ref);
     // handle supabase error
     if (error) {
       logFormattedSupabaseError(error);
