@@ -175,8 +175,8 @@ function validateParameterAndHandleErrors(res, parameter) {
     parameter = parseInt(parameter);
     if (isNaN(parameter)) {
       res.status(400).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `Invalid parameter syntax for type number: ${parameter}`
+        "Error",
+        "Invalid Parameter - Invalid parameter syntax for type number"
       ));
       return NaN;
     }
