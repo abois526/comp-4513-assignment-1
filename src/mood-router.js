@@ -68,8 +68,6 @@ function handleHappy(supabase, app) {
     parameter = validateParameterAndHandleErrors(res, parameter);
     // exit if error response has happened
     if (isNaN(parameter)) return; 
-    // check if parameter exists and is within bounds, set default if not
-    parameter = validateParameterAndHandleErrors(req.params.ref);
     const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
