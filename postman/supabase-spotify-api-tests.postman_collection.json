@@ -1,0 +1,1821 @@
+{
+  "info": {
+    "_postman_id": "b38958a1-0d59-41a5-96f4-57cabe4ffa2b",
+    "name": "supabase-spotify-api-tests",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52008038",
+    "_collection_link": "https://go.postman.co/collection/52008038-b38958a1-0d59-41a5-96f4-57cabe4ffa2b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Artists",
+      "item": [
+        {
+          "name": "/api/artists",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0]).to.have.property(\"artist_image_url\");",
+                  "    pm.expect(json[0]).to.have.property(\"spotify_url\");",
+                  "    pm.expect(json[0]).to.have.property(\"spotify_desc\");",
+                  "    pm.expect(json[0]).to.have.property(\"types\");",
+                  "    pm.expect(json[0].types).to.have.property(\"type_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns all artists\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(100);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/artists",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "artists"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/artists\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/artists/129",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0]).to.have.property(\"artist_image_url\");",
+                  "    pm.expect(json[0]).to.have.property(\"spotify_url\");",
+                  "    pm.expect(json[0]).to.have.property(\"spotify_desc\");",
+                  "    pm.expect(json[0]).to.have.property(\"types\");",
+                  "    pm.expect(json[0].types).to.have.property(\"type_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns the correct artist\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(1);",
+                  "    pm.expect(json[0].artist_id).to.eql(129);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/artists/129",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "artists",
+                "129"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/artists/:ref\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/artists/sdfjkhsdf",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/artists/sdfjkhsdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "artists",
+                "sdfjkhsdf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/api/artists/averages/129",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"avg_bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"avg_popularity\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns the averages for a single artist\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(1);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/artists/averages/129",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "artists",
+                "averages",
+                "129"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Genres",
+      "item": [
+        {
+          "name": "/api/genres",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns all genres\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(20);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/genres",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "genres"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/genres\""
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Songs",
+      "item": [
+        {
+          "name": "/api/songs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns all songs\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(236);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/sort/artist",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns songs sorted by artist\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(236);",
+                  "    const names = json.map(song => song.artist.name);",
+                  "    const sortedNames = [...names].sort();",
+                  "    pm.expect(names).to.eql(sortedNames);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/sort/artist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "sort",
+                "artist"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/sort/artist\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/sort/year",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns songs sorted by year\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(236);",
+                  "    const years = json.map(song => song.year);",
+                  "    const sortedYears = [...years].sort((a, b) => a - b);",
+                  "    pm.expect(years).to.eql(sortedYears);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/sort/year",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "sort",
+                "year"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/sort/year\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/sort/duration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns songs sorted by duration\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(236);",
+                  "    const durations = json.map(song => song.duration);",
+                  "    const sortedDurations = [...durations].sort((a, b) => a - b);",
+                  "    pm.expect(durations).to.eql(sortedDurations);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/sort/duration",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "sort",
+                "duration"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/sort/duration\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/1010",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns the correct song\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(1);",
+                  "    pm.expect(json[0].song_id).to.eql(1010);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/1010",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "1010"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/1010\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/sjdkfhsdkjf",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/sjdkfhsdkjf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "sjdkfhsdkjf"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/sjdkfhsdkjf\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/search/begin/love",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns songs beginning with the substring\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(song => {",
+                  "        pm.expect(song.title).to.match(/^love/i);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/search/begin/love",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "search",
+                "begin",
+                "love"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/search/begin/love\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/search/begin/sdjfhs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/search/begin/sdjfhs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "search",
+                "begin",
+                "sdjfhs"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/search/begin/sdjfhs\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/search/any/love",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns songs containing the substring\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(song => {",
+                  "        pm.expect(song.title.toLowerCase()).to.include(\"love\");",
+                  "    });",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/search/any/love",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "search",
+                "any",
+                "love"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/search/any/love\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/search/year/2017",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns the correct year\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(song => {",
+                  "        pm.expect(song.year).to.eql(2017);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/search/year/2017",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "search",
+                "year",
+                "2017"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/search/year/2017\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/search/year/2027",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/search/year/2027",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "search",
+                "year",
+                "2027"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/search/year/2027\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/artist/149",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns results with the correct artist_id\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(song => {",
+                  "        pm.expect(song.artist.artist_id).to.eql(149);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/artist/149",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "artist",
+                "149"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/artist/149\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/artist/7834562",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/artist/7834562",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "artist",
+                "7834562"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/artist/7834562\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/songs/genre/115",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns results with the correct genre_id\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(song => {",
+                  "        pm.expect(song.genre.genre_id).to.eql(115);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/songs/genre/115",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "songs",
+                "genre",
+                "115"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/songs/genre/115\""
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Playlists",
+      "item": [
+        {
+          "name": "/api/playlists",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is not present\", function () {",
+                  "    pm.response.to.not.have.jsonBody();",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/playlists",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "playlists"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/playlists\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/playlists/3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"playlist_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0]).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns results with the correct playlist_id\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(playlist => {",
+                  "        pm.expect(playlist.playlist_id).to.eql(3);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/playlists/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "playlists",
+                "3"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/playlists/3\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/playlists/35362",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/playlists/35362",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "playlists",
+                "35362"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/playlists/35362\""
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mood Playlists",
+      "item": [
+        {
+          "name": "/api/mood/dancing/5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 5 results from dancing in desc order\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(5);",
+                  "    let curr, prev;",
+                  "    json.forEach(song => {",
+                  "        curr = song.danceability;",
+                  "        if (prev === undefined) prev = curr;",
+                  "        pm.expect(curr).to.be.lessThanOrEqual(prev);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/dancing/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "dancing",
+                "5"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/dancing/5\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/mood/dancing/500",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 20 results (default) from dancing in desc order\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(20);",
+                  "    let curr, prev;",
+                  "    json.forEach(song => {",
+                  "        curr = song.danceability;",
+                  "        if (prev === undefined) prev = curr;",
+                  "        pm.expect(curr).to.be.lessThanOrEqual(prev);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/dancing/500",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "dancing",
+                "500"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/dancing/500\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/mood/dancing/ksdjf",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Has a non-empty error message\", () => {",
+                  "    const body = pm.response.json();",
+                  "    const key = \"Error\";",
+                  "",
+                  "    pm.expect(body).to.have.property(key);  ",
+                  "    pm.expect(body[key]).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/dancing/ksdjf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "dancing",
+                "ksdjf"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/dancing/ksdjf\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/mood/happy/8",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 8 results from happy in desc order\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(8);",
+                  "    let curr, prev;",
+                  "    json.forEach(song => {",
+                  "        curr = song.valence;",
+                  "        if (prev === undefined) prev = curr;",
+                  "        pm.expect(curr).to.be.lessThanOrEqual(prev);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/happy/8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "happy",
+                "8"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/happy/8\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/mood/happy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 20 results (default) from happy in desc order\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(20);",
+                  "    let curr, prev;",
+                  "    json.forEach(song => {",
+                  "        curr = song.valence;",
+                  "        if (prev === undefined) prev = curr;",
+                  "        pm.expect(curr).to.be.lessThanOrEqual(prev);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/happy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "happy"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/happy\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/mood/coffee/10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 10 results from coffee in desc order\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(10);",
+                  "    let curr, prev;",
+                  "    json.forEach(song => {",
+                  "        if (song.acousticness === 0) curr = song.liveness;",
+                  "        else curr = song.liveness / song.acousticness;",
+                  "        if (prev === undefined) prev = curr;",
+                  "        pm.expect(curr).to.be.lessThanOrEqual(prev);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/coffee/10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "coffee",
+                "10"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/coffee/10\""
+          },
+          "response": []
+        },
+        {
+          "name": "/api/mood/studying/15",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is present\", function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});",
+                  "",
+                  "pm.test(\"Response body contains the correct fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[0]).to.have.property(\"song_id\");",
+                  "    pm.expect(json[0]).to.have.property(\"title\");",
+                  "    pm.expect(json[0]).to.have.property(\"year\");",
+                  "    pm.expect(json[0]).to.have.property(\"bpm\");",
+                  "    pm.expect(json[0]).to.have.property(\"energy\");",
+                  "    pm.expect(json[0]).to.have.property(\"danceability\");",
+                  "    pm.expect(json[0]).to.have.property(\"loudness\");",
+                  "    pm.expect(json[0]).to.have.property(\"liveness\");",
+                  "    pm.expect(json[0]).to.have.property(\"valence\");",
+                  "    pm.expect(json[0]).to.have.property(\"duration\");",
+                  "    pm.expect(json[0]).to.have.property(\"acousticness\");",
+                  "    pm.expect(json[0]).to.have.property(\"speechiness\");",
+                  "    pm.expect(json[0]).to.have.property(\"popularity\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_id\");",
+                  "    pm.expect(json[0].artist).to.have.property(\"artist_name\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_id\");",
+                  "    pm.expect(json[0].genre).to.have.property(\"genre_name\");",
+                  "});",
+                  "",
+                  "pm.test(\"Returns 15 results from studying in desc order\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.lengthOf(15);",
+                  "    let curr, prev;",
+                  "    json.forEach(song => {",
+                  "        curr = song.energy * song.speechiness;",
+                  "        if (prev === undefined) prev = curr;",
+                  "        pm.expect(curr).to.be.lessThanOrEqual(prev);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mood/studying/15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mood",
+                "studying",
+                "15"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"{{baseUrl}}/api/mood/studying/15\""
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
