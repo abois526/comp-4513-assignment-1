@@ -337,7 +337,9 @@ function handleByGenre(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);

@@ -41,8 +41,8 @@ function validateQueryResultAndRespond(res, data, parameter) {
     res.json(data);
   } else {
     res.status(404).json(jsonErrorMsg(
-      `Error:`,
-      `The request filtered by the parameter '${parameter}' did not return any data`
+      `Error`,
+      `Invalid Parameter - The request filtered by the parameter '${parameter}' did not return any data`
     ));
   }
 }

@@ -24,7 +24,9 @@ function handleAll(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // return the data
     res.json(data);
