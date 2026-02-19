@@ -9,11 +9,11 @@ This is a REST-like API that serves JSON data for different artists, genres, son
 **Built With:** Node.js, Express.js, Supabase
 
 ## Details
-Basic use of HTTP response status codes is handled:
-- Requests for valid routes result in a 200 OK status code.
+HTTP response status codes are handled:
+- Requests for valid routes result in a 200 OK status code (by default).
 - Requests for invalid routes result in a 404 Not Found status code, along with an error message.
-- Requests for valid routes that are filtered by a parameter which result in no found resources result in a 404 Not Found status code and a detailed error message in JSON format is returned to the user.
-- Requests resulting in a Supabase error, such as providing an invalid data type as a parameter, result in a 500 Internal Server Error status code, error details being logged, and a detailed error message in JSON format provided by the `error.message` value
+- Requests for valid routes that are filtered by a parameter which result in no found resources result in a 404 Not Found status code and a JSON-formatted error message.
+- Requests resulting in a Supabase error result in the status code that is provided by the supabase client, error details being logged to `console.error`, and a JSON-formatted error message containing the value of `error.message`.
 
 The project is hosted on Render and routes must be appended to the base URL to access the data. It is hosted using the hobby plan which sleeps after 15 minutes of inactivity, so the first request may take a moment while the web service starts up again if it hasn't been recently used. 
 

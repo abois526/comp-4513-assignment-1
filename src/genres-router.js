@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError, validateQueryResultAndRespond } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -18,19 +18,16 @@ const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
  */
 function handleAll(supabase, app) {
   app.get('/api/genres', async (req, res) => {
-    const {data, error} = await supabase 
+    const {data, error, status, statusText} = await supabase 
       .from('genres')
       .select();
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // return the data
-    res.status(200).json(data);
+    res.json(data);
   });
 }
 

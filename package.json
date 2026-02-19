@@ -1,19 +1,19 @@
 {
-  "name": "comp-4513-assignment-1",
+  "name": "supabase-spotify-api",
   "version": "1.0.0",
   "description": "An API that serves data from Spotify for hit songs from 2016-2019",
-  "homepage": "https://github.com/abois526/comp-4513-assignment-1#readme",
+  "homepage": "https://github.com/abois526/supabase-spotify-api#readme",
   "bugs": {
-    "url": "https://github.com/abois526/comp-4513-assignment-1/issues"
+    "url": "https://github.com/abois526/supabase-spotify-api/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abois526/comp-4513-assignment-1.git"
+    "url": "git+https://github.com/abois526/supabase-spotify-api.git"
   },
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "./src/server.js",
   "scripts": {
     "start": "node ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"

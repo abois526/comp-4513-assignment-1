@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError, validateQueryResultAndRespond } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -18,7 +18,7 @@ const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
  */
 function handleAll(supabase, app) {
   app.get('/api/songs', async (req, res) => {
-    const {data, error} = await supabase 
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -38,16 +38,13 @@ function handleAll(supabase, app) {
         popularity
       `)
       .order('title', {ascending: true});
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // return the data
-    res.status(200).json(data);
+    res.json(data);
   });
 }
 
@@ -58,12 +55,25 @@ function handleAll(supabase, app) {
  */
 function handleByOrderField(supabase, app) {
   app.get('/api/songs/sort/:order', async (req, res) => {
-    // set up syntax to order parent table by the referenced table
-    let order = req.params.order;
-    if (order === "artist_name") order = `artist(${order})`;
-    if (order === "genre_name") order = `genre(${order})`;
+    const parameter = req.params.order;
+    // format input reference columns properly
+    let order = "";
+    switch (parameter) {
+      case "id":
+        order = "song_id";
+        break;
+      case "artist":
+        order = `artist(artist_name)`;
+        break;
+      case "genre":
+        order = `genre(genre_name)`;
+        break;
+      default:
+        order = parameter;
+        break;
+    }
 
-    const {data, error} = await supabase 
+    const {data, error, status, statusText} = await supabase 
         .from('songs')
         .select(`
           song_id,
@@ -83,16 +93,13 @@ function handleByOrderField(supabase, app) {
           popularity
         `)
         .order(order, {ascending: true});
-      // handle supabase error
-      if (error) {
-        logFormattedSupabaseError(error);
-        return res.status(500).json(jsonErrorMsg(
-          "Error (Supabase)",
-          error.message
-        ));
-      }
-      // return the data
-      res.status(200).json(data);
+    // handle supabase errors
+    if (error) {
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+    }
+    // if query produces a result return data, else provide error message
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -103,7 +110,8 @@ function handleByOrderField(supabase, app) {
  */
 function handleBySongId(supabase, app) {
   app.get('/api/songs/:ref', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.ref;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -122,24 +130,14 @@ function handleBySongId(supabase, app) {
         speechiness,
         popularity
       `)
-      .eq('song_id', req.params.ref);
-    // handle supabase error
+      .eq('song_id', parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No song match found for the song_id ${req.params.ref}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -150,7 +148,8 @@ function handleBySongId(supabase, app) {
  */
 function handleBeginsWithSubstring(supabase, app) {
   app.get('/api/songs/search/begin/:substring', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.substring;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -169,24 +168,14 @@ function handleBeginsWithSubstring(supabase, app) {
         speechiness,
         popularity
       `)
-      .ilike('title', `${req.params.substring}%`);
-    // handle supabase error
+      .ilike('title', `${parameter}%`);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No song matches found beginning with the substring ${req.params.substring}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -197,7 +186,8 @@ function handleBeginsWithSubstring(supabase, app) {
  */
 function handleContainsSubstring(supabase, app) {
   app.get('/api/songs/search/any/:substring', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.substring;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -216,24 +206,22 @@ function handleContainsSubstring(supabase, app) {
         speechiness,
         popularity
       `)
-      .ilike('title', `%${req.params.substring}%`);
+      .ilike('title', `%${parameter}%`);
     // handle supabase error
     if (error) {
       logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
+      return res.status(400).json(jsonErrorMsg(
         "Error (Supabase)",
         error.message
       ));
     }
-    // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No song matches found containing the substring ${req.params.substring}`
-      ));
+    // handle supabase errors
+    if (error) {
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
+    // if query produces a result return data, else provide error message
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -244,7 +232,8 @@ function handleContainsSubstring(supabase, app) {
  */
 function handleByYear(supabase, app) {
   app.get('/api/songs/search/year/:substring', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.substring;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -263,24 +252,19 @@ function handleByYear(supabase, app) {
         speechiness,
         popularity
       `)
-      .eq('year', req.params.substring);
-    // handle supabase error
+      .eq('year', parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+    }
+    // handle supabase errors
+    if (error) {
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No song matches found whose year is equal to ${req.params.substring}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -291,7 +275,8 @@ function handleByYear(supabase, app) {
  */
 function handleByArtist(supabase, app) {
   app.get('/api/songs/artist/:ref', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.ref;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -310,24 +295,14 @@ function handleByArtist(supabase, app) {
         speechiness,
         popularity
       `)
-      .eq('artist_id', req.params.ref);
-    // handle supabase error
+      .eq('artist_id', parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No song matches found for the artist_id ${req.params.ref}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -338,7 +313,8 @@ function handleByArtist(supabase, app) {
  */
 function handleByGenre(supabase, app) {
   app.get('/api/songs/genre/:ref', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.ref;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -357,24 +333,14 @@ function handleByGenre(supabase, app) {
         speechiness,
         popularity
       `)
-      .eq('genre_id', req.params.ref);
-    // handle supabase error
+      .eq('genre_id', parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No song matches found for the genre_id ${req.params.ref}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 

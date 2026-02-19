@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError, validateQueryResultAndRespond } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -18,15 +18,12 @@ const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
  */
 function handleDancing(supabase, app) {
   app.get('/api/mood/dancing{/:ref}', async (req, res) => {
-    let ref = req.params.ref;
-    if (ref) {
-      // check if value within 1-20, default to 20 if not else keep value
-      ref = (ref < 1 || ref > 20) ? 20 : ref;
-    } else {
-      // default to 20 if not provided 
-      ref = 20;
-    }
-    const { data, error } = await supabase
+    let parameter = req.params.ref;
+    // if of type number then validate, else send error response
+    parameter = validateParameterAndHandleErrors(res, parameter);
+    // exit if error response has happened
+    if (isNaN(parameter)) return; 
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -48,24 +45,14 @@ function handleDancing(supabase, app) {
       .order('danceability', {
         ascending: false,
       })
-      .limit(ref);
-    // handle supabase error
+      .limit(parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) {
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        "No song matches found for the mood dancing"
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -76,15 +63,14 @@ function handleDancing(supabase, app) {
  */
 function handleHappy(supabase, app) {
   app.get('/api/mood/happy{/:ref}', async (req, res) => {
-    let ref = req.params.ref;
-    if (ref) {
-      // check if value within 1-20, default to 20 if not else keep value
-      ref = (ref < 1 || ref > 20) ? 20 : ref;
-    } else {
-      // default to 20 if not provided 
-      ref = 20;
-    }
-    const { data, error } = await supabase
+    let parameter = req.params.ref;
+    // if of type number then validate, else send error response
+    parameter = validateParameterAndHandleErrors(res, parameter);
+    // exit if error response has happened
+    if (isNaN(parameter)) return; 
+    // check if parameter exists and is within bounds, set default if not
+    parameter = validateParameterAndHandleErrors(req.params.ref);
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(`
         song_id,
@@ -106,24 +92,14 @@ function handleHappy(supabase, app) {
       .order('valence', {
         ascending: false,
       })
-      .limit(ref);
-    // handle supabase error
+      .limit(parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) {
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        "No song matches found for the mood dancing"
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -134,36 +110,23 @@ function handleHappy(supabase, app) {
  */
 function handleCoffee(supabase, app) {
   app.get('/api/mood/coffee{/:ref}', async (req, res) => {
-    let ref = req.params.ref;
-    if (ref) {
-      // check if value within 1-20, default to 20 if not else keep value
-      ref = (ref < 1 || ref > 20) ? 20 : ref;
-    } else {
-      // default to 20 if not provided 
-      ref = 20;
-    }
-    const { data, error } = await supabase
+    let parameter = req.params.ref;
+    // if of type number then validate, else send error response
+    parameter = validateParameterAndHandleErrors(res, parameter);
+    // exit if error response has happened
+    if (isNaN(parameter)) return; 
+    const {data, error, status, statusText} = await supabase 
       .rpc(
         'top_songs_coffee',
-        {limit_count: ref}
+        {limit_count: parameter}
       );
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) {
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        "No song matches found for the mood coffee"
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -174,37 +137,49 @@ function handleCoffee(supabase, app) {
  */
 function handleStudying(supabase, app) {
   app.get('/api/mood/studying{/:ref}', async (req, res) => {
-    let ref = req.params.ref;
-    if (ref) {
-      // check if value within 1-20, default to 20 if not else keep value
-      ref = (ref < 1 || ref > 20) ? 20 : ref;
-    } else {
-      // default to 20 if not provided 
-      ref = 20;
-    }
-    const { data, error } = await supabase
+    let parameter = req.params.ref;
+    // if of type number then validate, else send error response
+    parameter = validateParameterAndHandleErrors(res, parameter);
+    // exit if error response has happened
+    if (isNaN(parameter)) return; 
+    const {data, error, status, statusText} = await supabase 
       .rpc(
         'top_songs_studying',
-        {limit_count: ref}
+        {limit_count: parameter}
       );
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) {
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        "No song matches found for the mood coffee"
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
+}
+
+/**
+ * @description validates the query parameter by checking if it exists and is within bounds, assigning a default value if either condition is false; handles errors when the parameter is not of type number (must perform isNaN check and exit after Fn call)
+ * @param {String} parameter the parameter from req.params.ref
+ * @returns if of type number the parameter in a validated format, else NaN
+ */
+function validateParameterAndHandleErrors(res, parameter) {
+  // check if parameter exists, defaulting to 20 if not
+  if (parameter) {
+    // check if parameter is of type number
+    parameter = parseInt(parameter);
+    if (isNaN(parameter)) {
+      res.status(400).json(jsonErrorMsg(
+        "Error (Not Found)",
+        `Invalid parameter syntax for type number: ${parameter}`
+      ));
+      return NaN;
+    }
+    // check if value within 1-20; default to 20 if not, else keep value
+    parameter = (parameter < 1 || parameter > 20) ? 20 : parameter;
+  } else {
+    parameter = 20;
+  }
+  return parameter;
 }
 
 /*--------------------------------------

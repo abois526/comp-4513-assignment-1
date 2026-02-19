@@ -20,11 +20,25 @@ const jsonErrorMsg = (key, value) => {
  * @description formats error details for supabase errors
  * @param {String} error the supabase error
  */
-function logFormattedSupabaseError(error) {
-  console.log(`Error code: ${error.error}`);
-  console.log(`Error message: ${error.message}`);
-  console.log(`HTTP status: ${error.status}`);
-  console.log(`Status code: ${error.statusCode}`);
+function logFormattedSupabaseError(error, status, statusText) {
+  console.error("Logging error\n---");
+  console.error(`Error message: ${error.message}`);
+  console.error(`Error details: ${error.details}`);
+  console.error(`Error hint: ${error.hint}`);
+  console.error(`Error code: ${error.code}`);
+  console.error(`HTTP status: ${status}`);
+  console.error(`HTTP status text: ${statusText}\n`);
+}
+
+function validateQueryResultAndRespond(res, data, parameter) {
+  if (data.length > 0) { 
+    res.json(data);
+  } else {
+    res.status(404).json(jsonErrorMsg(
+      `Error:`,
+      `The request filtered by the parameter '${parameter}' did not return any data`
+    ));
+  }
 }
 
 /*--------------------------------------
@@ -32,5 +46,6 @@ function logFormattedSupabaseError(error) {
 /-------------------------------------*/
 module.exports = { 
   jsonErrorMsg,
-  logFormattedSupabaseError
+  logFormattedSupabaseError,
+  validateQueryResultAndRespond
 };

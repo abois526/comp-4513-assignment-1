@@ -43,7 +43,7 @@ songs.handleByArtist(supabase, app);
 songs.handleByGenre(supabase, app);
 
 // playlists endpoints
-playlists.handleAll(supabase, app);
+playlists.handleByPlaylist(supabase, app);
 
 // moods endpoints
 moods.handleDancing(supabase, app);

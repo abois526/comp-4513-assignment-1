@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError, validateQueryResultAndRespond } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -18,7 +18,7 @@ const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
  */
 function handleAll(supabase, app) {
   app.get('/api/artists', async (req, res) => {
-    const {data, error} = await supabase 
+    const {data, error, status, statusText} = await supabase 
       .from('artists')
       .select(`
         artist_id,
@@ -29,16 +29,13 @@ function handleAll(supabase, app) {
         spotify_desc
       `)
       .order('artist_name', {ascending: true});
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // return the data
-    res.status(200).json(data);
+    res.json(data);
   });
 }
 
@@ -49,7 +46,8 @@ function handleAll(supabase, app) {
  */
 function handleByArtist(supabase, app) {
   app.get('/api/artists/:ref', async (req, res) => {
-    const {data, error} = await supabase 
+    const parameter = req.params.ref;
+    const {data, error, status, statusText} = await supabase 
       .from('artists')
       .select(`
         artist_id,
@@ -60,23 +58,13 @@ function handleByArtist(supabase, app) {
         spotify_desc
       `)
       .eq('artist_id', req.params.ref);
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No artist match found for the artist_id ${req.params.ref}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -87,7 +75,8 @@ function handleByArtist(supabase, app) {
 */
 function handleAveragesForArtist(supabase, app) {
   app.get('/api/artists/averages/:ref', async (req, res) => {
-    const { data, error } = await supabase
+    const parameter = req.params.ref;
+    const {data, error, status, statusText} = await supabase 
       .from('songs')
       .select(
         `
@@ -104,23 +93,13 @@ function handleAveragesForArtist(supabase, app) {
         `,
       )
       .eq('artist_id', req.params.ref);
-    // handle supabase error
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No artist match found for the artist_id ${req.params.ref}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 

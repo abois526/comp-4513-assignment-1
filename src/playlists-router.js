@@ -6,7 +6,7 @@
 /*--------------------------------------
 / SECTION: Module Imports
 /-------------------------------------*/
-const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
+const { jsonErrorMsg, logFormattedSupabaseError, validateQueryResultAndRespond } = require("./utils.js");
 
 /*--------------------------------------
 / SECTION: Functions
@@ -16,44 +16,35 @@ const { jsonErrorMsg, logFormattedSupabaseError } = require("./utils.js");
  * @param {Function} supabase the supabase client for interacting with the db
  * @param {Function} app the express application 
  */
-function handleAll(supabase, app) {
+function handleByPlaylist(supabase, app) {
   app.get('/api/playlists/:ref', async (req, res) => {
-  const { data, error } = await supabase
-    .from('playlists')
-    .select(
-      `
-      playlist_id,
-      ...songs!inner(
-        song_id,
-        title,
-        year,
-        ...artists!inner(
-          artist_name
-        ),
-        ...genres!inner(
-          genre_name
+    const parameter = req.params.ref;
+    const { data, error, status, statusText } = await supabase
+      .from('playlists')
+      .select(
+        `
+        playlist_id,
+        ...songs!inner(
+          song_id,
+          title,
+          year,
+          ...artists!inner(
+            artist_name
+          ),
+          ...genres!inner(
+            genre_name
+          )
         )
+        `,
       )
-      `,
-    )
-    .eq('playlist_id', req.params.ref);
-    // handle supabase error
+      .eq('playlist_id', parameter);
+    // handle supabase errors
     if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(500).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
+      logFormattedSupabaseError(error, status, statusText);
+      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
     }
     // if query produces a result return data, else provide error message
-    if (data.length > 0) { 
-      res.status(200).json(data);
-    } else {
-      res.status(404).json(jsonErrorMsg(
-        "Error (Not Found)",
-        `No playlist match found for the playlist_id ${req.params.ref}`
-      ));
-    }
+    validateQueryResultAndRespond(res, data, parameter);
   });
 }
 
@@ -61,5 +52,5 @@ function handleAll(supabase, app) {
 / SECTION: Module Exports
 /-------------------------------------*/
 module.exports = { 
-  handleAll
+  handleByPlaylist
 };
