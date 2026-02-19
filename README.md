@@ -6,7 +6,7 @@ This is a REST-like API that serves JSON data for different artists, genres, son
 
 **Link to base URL:** https://supabase-spotify-api.onrender.com
 
-**Built With:** Node.js, Express.js, Supabase (database host), Render (host server)
+**Built With:** Node.js, Express.js, Supabase (database host), Render (host server), Postman (testing)
 
 ## Details
 HTTP response status codes are handled:
@@ -14,6 +14,8 @@ HTTP response status codes are handled:
 - Requests for invalid routes result in a 404 Not Found status code, along with an error message.
 - Requests for valid routes that are filtered by a parameter which result in no found resources result in a 404 Not Found status code and a JSON-formatted error message.
 - Requests resulting in a Supabase error result in the status code that is provided by the supabase client, error details being logged to `console.error`, and a JSON-formatted error message containing the value of `error.message`.
+
+All endpoints have been tested with Postman using the provided collection and environment.
 
 The project is hosted on Render and routes must be appended to the base URL to access the data. It is hosted using the hobby plan which sleeps after 15 minutes of inactivity, so the first request may take a moment while the web service starts up again if it hasn't been recently used. 
 
@@ -105,3 +107,18 @@ The database is hosted on Supabase on the free plan. These projects go inactive 
 | [/api/mood/happy](https://supabase-spotify-api.onrender.com/api/mood/happy) |
 | [/api/mood/coffee/10](https://supabase-spotify-api.onrender.com/api/mood/coffee/10) |
 | [/api/mood/studying/15](https://supabase-spotify-api.onrender.com/api/mood/studying/15) |
+
+
+### Postman Testing 
+A test suite has been developed using Postman. Two files have been provided: 
+- `supabase-spotify-api-env.postman_environment.json`
+- `supabase-spotify-api-tests.postman_collection.json`
+
+These files are the exported collection and environment for the test suite and can be imported into postman to run tests for each of the example API requests. To do this, follow these steps:
+
+1. Open Postman and click on the `Import` button.
+2. Import the `supabase-spotify-api-env.postman_environment.json` and `supabase-spotify-api-tests.postman_collection.json` files using drag and drop or by browsing for them. The collection and environment will appear in the workspace.
+3. Select the environment in the dropdown menu on the top right.
+4. Click on the name of the collection.
+5. Click on the `Run` button near the top right.
+6. Click on the `Run supabase-spotify-api-tests` button. This will run all of the avaiable tests and record the results.
