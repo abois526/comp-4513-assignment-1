@@ -41,7 +41,9 @@ function handleAll(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // return the data
     res.json(data);
@@ -96,7 +98,9 @@ function handleByOrderField(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);
@@ -134,7 +138,9 @@ function handleBySongId(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);
@@ -172,7 +178,9 @@ function handleBeginsWithSubstring(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);
@@ -207,18 +215,12 @@ function handleContainsSubstring(supabase, app) {
         popularity
       `)
       .ilike('title', `%${parameter}%`);
-    // handle supabase error
-    if (error) {
-      logFormattedSupabaseError(error);
-      return res.status(400).json(jsonErrorMsg(
-        "Error (Supabase)",
-        error.message
-      ));
-    }
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);
@@ -253,15 +255,11 @@ function handleByYear(supabase, app) {
         popularity
       `)
       .eq('year', parameter);
-    // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
-    }
-    // handle supabase errors
-    if (error) {
-      logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);
@@ -299,7 +297,9 @@ function handleByArtist(supabase, app) {
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
-      return res.status(status).json(jsonErrorMsg("Error (Supabase)", error.message));
+      return res.status(status).json(jsonErrorMsg(
+        "Error", `Supabase error - ${error.message}`
+      ));
     }
     // if query produces a result return data, else provide error message
     validateQueryResultAndRespond(res, data, parameter);
