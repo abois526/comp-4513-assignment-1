@@ -6,7 +6,7 @@ This is a REST-like API that serves JSON data for different artists, genres, son
 
 **Link to base URL:** https://supabase-spotify-api.onrender.com
 
-**Built With:** Node.js, Express.js, Supabase
+**Built With:** Node.js, Express.js, Supabase (database host), Render (host server)
 
 ## Details
 HTTP response status codes are handled:

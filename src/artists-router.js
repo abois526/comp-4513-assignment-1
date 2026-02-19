@@ -57,7 +57,7 @@ function handleByArtist(supabase, app) {
         spotify_url,
         spotify_desc
       `)
-      .eq('artist_id', req.params.ref);
+      .eq('artist_id', parameter);
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);
@@ -92,7 +92,7 @@ function handleAveragesForArtist(supabase, app) {
         avg_popularity:popularity.avg()
         `,
       )
-      .eq('artist_id', req.params.ref);
+      .eq('artist_id', parameter);
     // handle supabase errors
     if (error) {
       logFormattedSupabaseError(error, status, statusText);

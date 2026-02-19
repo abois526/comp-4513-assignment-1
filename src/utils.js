@@ -30,6 +30,12 @@ function logFormattedSupabaseError(error, status, statusText) {
   console.error(`HTTP status text: ${statusText}\n`);
 }
 
+/**
+ * @description validates that the query response produced data and sends a response if so, otherwise responds with an error message
+ * @param {Object} res response object for the server
+ * @param {Object} data the data from the query
+ * @param {String|Number} parameter the specified parameter to filter the query results
+ */
 function validateQueryResultAndRespond(res, data, parameter) {
   if (data.length > 0) { 
     res.json(data);
